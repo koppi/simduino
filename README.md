@@ -49,22 +49,23 @@ Run a test sketch from the command-line:
 
 ```
 $ tests/AccelStepper/Bounce/Bounce
-pinMode(2, 1)
-pinMode(3, 1)
-pinMode(4, 1)
-pinMode(5, 1)
-digitalWrite(2, 0)
-digitalWrite(3, 1)
-digitalWrite(4, 1)
-digitalWrite(5, 0)
-digitalWrite(2, 0)
-digitalWrite(3, 1)
-digitalWrite(4, 0)
-digitalWrite(5, 1)
-digitalWrite(2, 1)
-digitalWrite(3, 0)
-digitalWrite(4, 0)
+ pinMode(2, 1)
+ pinMode(3, 1)
+ pinMode(4, 1)
+ pinMode(5, 1)
+setup() begin
+setup() end
+loop() enter
+ digitalWrite(2, 0)
+ digitalWrite(3, 1)
+ digitalWrite(4, 1)
+ digitalWrite(5, 0)
+ digitalWrite(2, 0)
+ digitalWrite(3, 1)
+ digitalWrite(4, 0)
+ digitalWrite(5, 1)
 [...]
+^C shutdown(2)
 ```
 
 Press CTRL+C to terminate the program. Have fun!

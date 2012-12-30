@@ -167,6 +167,7 @@ extern "C"{
   
   void setup(void);
   void loop(void);
+  void shutdown(int signum);
 
   void beep();
   

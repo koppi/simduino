@@ -29,35 +29,36 @@
 #include <time.h>
 #include <inttypes.h>
 #include <unistd.h>
+#include <signal.h>
 
 void init(void) {
-  debug("init()");
+  debug(" init()");
 }
   
 void pinMode(uint8_t p, uint8_t v) {
-  debugf("pinMode(%d, %d)\n", p, v);
+  debugf(" pinMode(%d, %d)\n", p, v);
 }
 
 void digitalWrite(uint8_t p, uint8_t v) {
-  debugf("digitalWrite(%d, %d)\n", p, v);
+  debugf(" digitalWrite(%d, %d)\n", p, v);
 }
 
 int digitalRead(uint8_t v) {
-  debugf("digitalRead(%d)\n", v);
+  debugf(" digitalRead(%d)\n", v);
   return 0;
 }
 
 int analogRead(uint8_t v) {
-  debugf("analogRead(%d)\n", v);
+  debugf(" analogRead(%d)\n", v);
   return 0;
 }
 
 void analogReference(uint8_t mode) {
-  debugf("analogReference(%d)\n", mode);
+  debugf(" analogReference(%d)\n", mode);
 }
 
 void analogWrite(uint8_t p, int v) {
-  debugf("analogWrite(%d, %d)\n", p, v);
+  debugf(" analogWrite(%d, %d)\n", p, v);
 }
 
 unsigned long micros(void) {
@@ -78,22 +79,22 @@ unsigned long micros(void) {
 }
 
 unsigned long millis(void) {
-  debug("millis()\n");
+  debug(" millis()\n");
   return micros() * 1000;
 }
 
 void delay(unsigned long t) {
-  debugf("delay(%lu)\n", t);
+  debugf(" delay(%lu)\n", t);
   usleep(t * 1000);
 }
 
 void delayMicroseconds(unsigned int us) {
-  debugf("delayMicroseconds(%d)\n", us);
+  debugf(" delayMicroseconds(%d)\n", us);
   usleep(us);
 }
 
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout) {
-  debugf("pulseIn(%d, %d, %lu)\n", pin, state, timeout);
+  debugf(" pulseIn(%d, %d, %lu)\n", pin, state, timeout);
   return 0UL;
 }
 
@@ -103,25 +104,37 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin,
 }
 
 uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) {
-  debugf("shiftIn(%d, %d, %d)\n", dataPin, clockPin, bitOrder);
+  debugf(" shiftIn(%d, %d, %d)\n", dataPin, clockPin, bitOrder);
   return 0;
 }
 
 void attachInterrupt(uint8_t p, void (*)(void), int mode) {
-  debugf("attachInterrupt(%d, void*, %d)\n", p, mode);
+  debugf(" attachInterrupt(%d, void*, %d)\n", p, mode);
 }
 
 void detachInterrupt(uint8_t p) {
-  debugf("detachInterrupt(%d)\n", p);
+  debugf(" detachInterrupt(%d)\n", p);
 }
 
 void beep(void) {
-  debug("beep()\n");
+  debug(" beep()\n");
+}
+
+void shutdown(int signum)
+{
+  debugf(" shutdown(%d)\n", signum);
+  exit(signum);
 }
 
 int main(int argc, char **argv) {
-  setup();
+  signal(SIGINT, shutdown);
+  signal(SIGQUIT, shutdown);
 
+  debug("setup() begin\n");
+  setup();
+  debug("setup() end\n");
+
+  debug("loop() enter\n");
   while(true) {
 	loop();
   }
