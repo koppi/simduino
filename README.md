@@ -10,13 +10,13 @@ Supported Arduinos
 
 ## Documentation
 
-Checkout the simduino repository:
+Checkout the Simduino repository:
 
 ```
 $ git clone git://github.com/koppi/simduino.git
 ```
 
-Build simduino the test sketches:
+Build Simduino the test sketches:
 
 ```
 $ cd simduino
