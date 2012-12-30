@@ -31,19 +31,19 @@
 #include <unistd.h>
 #include <signal.h>
 
-void init(void) {
+__attribute__((weak)) void init(void) {
   debug(" init()");
 }
   
-void pinMode(uint8_t p, uint8_t v) {
+__attribute__((weak)) void pinMode(uint8_t p, uint8_t v) {
   debugf(" pinMode(%d, %d)\n", p, v);
 }
 
-void digitalWrite(uint8_t p, uint8_t v) {
+__attribute__((weak)) void digitalWrite(uint8_t p, uint8_t v) {
   debugf(" digitalWrite(%d, %d)\n", p, v);
 }
 
-int digitalRead(uint8_t p) {
+__attribute__((weak)) int digitalRead(uint8_t p) {
   debugf(" digitalRead(%d)\n", p);
   return 0;
 }
@@ -53,15 +53,15 @@ int analogRead(uint8_t p) {
   return 0;
 }
 
-void analogReference(uint8_t mode) {
+__attribute__((weak)) void analogReference(uint8_t mode) {
   debugf(" analogReference(%d)\n", mode);
 }
 
-void analogWrite(uint8_t p, int v) {
+__attribute__((weak)) void analogWrite(uint8_t p, int v) {
   debugf(" analogWrite(%d, %d)\n", p, v);
 }
 
-unsigned long micros(void) {
+__attribute__((weak)) unsigned long micros(void) {
   struct timeval tv;
   struct timezone tz;
 
@@ -78,57 +78,77 @@ unsigned long micros(void) {
   return tv.tv_usec;
 }
 
-unsigned long millis(void) {
+__attribute__((weak)) unsigned long millis(void) {
   debug(" millis()\n");
   return micros() * 1000;
 }
 
-void delay(unsigned long t) {
+__attribute__((weak)) void delay(unsigned long t) {
   debugf(" delay(%lu)\n", t);
   usleep(t * 1000);
 }
 
-void delayMicroseconds(unsigned int us) {
+__attribute__((weak)) void delayMicroseconds(unsigned int us) {
   debugf(" delayMicroseconds(%d)\n", us);
   usleep(us);
 }
 
-unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout) {
+__attribute__((weak)) unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout) {
   debugf(" pulseIn(%d, %d, %lu)\n", pin, state, timeout);
   return 0UL;
 }
 
-void shiftOut(uint8_t dataPin, uint8_t clockPin,
+__attribute__((weak)) void shiftOut(uint8_t dataPin, uint8_t clockPin,
 			  uint8_t bitOrder, uint8_t val) {
   debugf("shiftOut(%d, %d, %d, %d)\n", dataPin, clockPin, bitOrder, val);
 }
 
-uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) {
+__attribute__((weak)) uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) {
   debugf(" shiftIn(%d, %d, %d)\n", dataPin, clockPin, bitOrder);
   return 0;
 }
 
-void attachInterrupt(uint8_t p, void (*)(void), int mode) {
+__attribute__((weak)) void attachInterrupt(uint8_t p, void (*)(void), int mode) {
   debugf(" attachInterrupt(%d, void*, %d)\n", p, mode);
 }
 
-void detachInterrupt(uint8_t p) {
+__attribute__((weak)) void detachInterrupt(uint8_t p) {
   debugf(" detachInterrupt(%d)\n", p);
 }
 
-void beep(void) {
+__attribute__((weak)) void beep(void) {
   debug(" beep()\n");
 }
 
-void shutdown(int signum)
+__attribute__((weak)) void shutdown(int signum)
 {
   debugf(" shutdown(%d)\n", signum);
   exit(signum);
 }
 
-int main(int argc, char **argv) {
+__attribute__((weak)) int setupSim(int, char**)
+{
+  return 0;
+}
+
+__attribute__((weak)) int main(int argc, char **argv) {
   signal(SIGINT, shutdown);
   signal(SIGQUIT, shutdown);
+
+  int i, res;
+
+  if (res = setupSim(argc, argv) != 0) {
+	debugf("setupSim(%d", argc);
+
+	for (i = 1; i < argc ; i++) {
+	  debugf(",%s", argv[i]);
+	  if (i < argc - 2) debug(", ");
+	}
+
+	debugf(") returned %d. Exiting.\n", argc, argv, res);
+
+	exit(res);
+  }
 
   debug("setup() begin\n");
   setup();

@@ -4,9 +4,13 @@ BIN = libSimduino.a
 
 # G++ Compiler flags -----------------------------------------------------
 
+CXX      ?= g++
+AR       ?= ar
 CXXFLAGS += -std=c++11 -g -I. -pedantic
 
 # Main target ------------------------------------------------------------
+
+-include common.mk
 
 all: $(BIN)
 	@echo " Built $(BIN)"
@@ -21,16 +25,16 @@ DEP = $(SRC:.cpp=.d)
 
 $(BIN): $(OBJ) Makefile
 	@echo "  ld $@"
-	@$(AR) rcs $@ $^
+	$(Q)$(AR) rcs $@ $^
 
 .cpp.o: Makefile
 	@echo "  cc $<"
-	@$(CXX) -c $(CXXFLAGS) $<
+	$(Q)$(CXX) -c $(CXXFLAGS) $<
 
 # Dependency resolution targets ------------------------------------------
 
 .cpp.d: Makefile
-	@$(CXX) $(CXXFLAGS) -MM -MD -o $@ $<
+	$(Q)$(CXX) $(CXXFLAGS) -MM -MD -o $@ $<
 
 -include $(DEP)
 

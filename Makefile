@@ -10,6 +10,8 @@ TESTS += AccelStepper/Bounce \
 
 # Makefile Magic ---------------------------------------------------------
 
+include Simduino/common.mk
+
 DIRS = $(addprefix tests/,$(TESTS))
 
 DIRS_BUILD = $(DIRS:%=build-%)
@@ -19,14 +21,14 @@ all: $(DIRS_BUILD)
 
 $(DIRS_BUILD):
 	@echo " Building $(@:build-%=%)"
-	@$(MAKE) --no-print-directory -C $(@:build-%=%)
+	$(Q)@$(MAKE) -C $(@:build-%=%)
 
 clean: $(DIRS_CLEAN)
 	@echo " Cleaning Simduino"
-	@$(MAKE) --no-print-directory -C Simduino clean
+	$(Q)@$(MAKE) -C Simduino clean
 
 $(DIRS_CLEAN):
 	@echo " Cleaning $(@:clean-%=%)"
-	@$(MAKE) --no-print-directory -C $(@:clean-%=%) clean
+	$(Q)@$(MAKE) -C $(@:clean-%=%) clean
 
 .PHONY: $(DIRS_BUILD) clean $(DIRS_CLEAN)

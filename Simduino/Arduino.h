@@ -169,6 +169,8 @@ extern "C"{
   void loop(void);
   void shutdown(int signum);
 
+  int setupSim(int argc, char** argv);
+
   void beep();
   
 #ifdef __cplusplus

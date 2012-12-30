@@ -21,8 +21,7 @@
  * Code
  *
  * In the program below, the first thing you do is to initialize pin 13 as
- * an output pin with the line
- * 
+ * an output pin with the line * 
  * pinMode(13, OUTPUT);
  * 
  * In the main loop, you turn the LED on with the line:

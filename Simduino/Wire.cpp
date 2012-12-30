@@ -24,6 +24,9 @@ extern "C" {
 #include <inttypes.h>
 #include <stddef.h>
 #include <unistd.h>
+
+#include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
 }
 
 #include "Wire.h"
@@ -67,6 +70,11 @@ TwoWire::TwoWire(int _fd)
 
 // Public Methods //////////////////////////////////////////////////////////////
 
+int TwoWire::address(uint8_t addr)
+{
+  return (ioctl(fd, I2C_SLAVE, addr) >= 0 ? 1 : 0);
+}
+
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
@@ -75,7 +83,9 @@ void TwoWire::send(uint8_t data)
   uint8_t buf[1] = { data };
   write(fd, buf, 1);
 
+#ifdef DEBUG_WIRE
   hexdump(buf, 1);
+#endif
 }
 
 // must be called in:
