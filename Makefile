@@ -1,18 +1,18 @@
 # Modules of Simduino ----------------------------------------------------
 
-TESTS += Tutorial/00-BareMinimum \
-         Tutorial/01-Blink \
-         Tutorial/02-DigitalReadSerial
+TUTOR += 00-BareMinimum \
+         01-Blink \
+         02-DigitalReadSerial
 
 TESTS += AccelStepper/Bounce \
-	 AccelStepper/AFMotor_ConstantSpeed \
-	 AccelStepper/AFMotor_MultiStepper
+         AccelStepper/AFMotor_ConstantSpeed \
+         AccelStepper/AFMotor_MultiStepper
 
 # Makefile Magic ---------------------------------------------------------
 
 include Simduino/common.mk
 
-DIRS = $(addprefix tests/,$(TESTS))
+DIRS = $(addprefix Tutorial/,$(TUTOR)) $(addprefix Tests/,$(TESTS))
 
 DIRS_BUILD = $(DIRS:%=build-%)
 DIRS_CLEAN = $(DIRS:%=clean-%)

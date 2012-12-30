@@ -4,7 +4,7 @@ BIN       = $(shell basename `pwd`).exe
 
 # Simduino Magic ---------------------------------------------------------
 
-SIMDUINO  = ../../../Simduino
+SIMDUINO  = ../../Simduino
 include $(SIMDUINO)/sketch.mk
 
 # EOF --------------------------------------------------------------------

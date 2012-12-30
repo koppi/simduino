@@ -12,19 +12,19 @@ Supported Arduinos
 
 Checkout the Simduino repository:
 
-```
+```bash
 $ git clone git://github.com/koppi/simduino.git
 ```
 
 Build Simduino the test sketches:
 
-```
+```bash
 $ cd simduino
 $ make
- Building tests/Tutorial/00-BareMinimum
+ Building Tutorial/00-BareMinimum
   cc main.cpp
-  cc AccelStepper.cpp
   cc AFMotor.cpp
+  cc AccelStepper.cpp
   cc Arduino.cpp
   cc HardwareSerial.cpp
   cc I2CIO.cpp
@@ -32,24 +32,22 @@ $ make
   cc LCD_I2C.cpp
   cc Print.cpp
   cc Stream.cpp
-  cc Wire.cpp
   cc WString.cpp
+  cc Wire.cpp
   ld libSimduino.a
  Built libSimduino.a
   ld 00-BareMinimum.exe
- Building tests/Tutorial/01-Blink
+ Building Tutorial/01-Blink
   cc main.cpp
+  cc sim.cpp
   ld 01-Blink.exe
- Building tests/Tutorial/02-DigitalReadSerial
-  cc main.cpp
-  ld 02-DigitalReadSerial.exe
 [...]
 ```
 
 Run a test sketch from the command-line:
 
-```
-$ tests/AccelStepper/Bounce/Bounce.exe
+```bash
+$ Tests/AccelStepper/Bounce/Bounce.exe
  pinMode(2, 1)
  pinMode(3, 1)
  pinMode(4, 1)

@@ -62,6 +62,6 @@ void digitalWrite(uint8_t p, uint8_t v)
   debugf("my digitalWrite(%d, %d)\n", p, v);
 
   if (p == 13) {
-	io->digitalWrite(0, !v);
+	io->digitalWrite(0, v);
   }
 }
