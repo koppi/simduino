@@ -38,7 +38,7 @@ extern "C"{
 
 #include "config.h"
 
-#include "sfr_defs.h"
+#include <avr/sfr_defs.h>
 
 #define DO_PRAGMA(x) _Pragma (#x)
 #define TODO(x) DO_PRAGMA(message ("TODO - " #x))
