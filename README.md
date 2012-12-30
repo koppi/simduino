@@ -10,10 +10,15 @@ Supported Arduinos
 
 ## Documentation
 
-Build and run one of the sketches in tests/ sub-directory:
+Checkout the simduino repository:
 
 ```
 $ git clone git://github.com/koppi/simduino.git
+```
+
+Build simduino the test sketches:
+
+```
 $ cd simduino
 $ make
  Building tests/AccelStepper/Bounce
@@ -38,7 +43,12 @@ $ make
  Building tests/AccelStepper/AFMotor_MultiStepper
   cc main.cpp
   ld AFMotor_MultiStepper
-$ cd tests/AccelStepper/Bounce/Bounce
+```
+
+Run a test sketch from the command-line:
+
+```
+$ tests/AccelStepper/Bounce/Bounce
 pinMode(2, 1)
 pinMode(3, 1)
 pinMode(4, 1)
