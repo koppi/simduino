@@ -1,8 +1,12 @@
 # Modules of Simduino ----------------------------------------------------
 
-TESTS = AccelStepper/Bounce \
-		AccelStepper/AFMotor_ConstantSpeed \
-		AccelStepper/AFMotor_MultiStepper
+TESTS += Tutorial/00-BareMinimum \
+         Tutorial/01-Blink \
+         Tutorial/02-DigitalReadSerial
+
+TESTS += AccelStepper/Bounce \
+	 AccelStepper/AFMotor_ConstantSpeed \
+	 AccelStepper/AFMotor_MultiStepper
 
 # Makefile Magic ---------------------------------------------------------
 

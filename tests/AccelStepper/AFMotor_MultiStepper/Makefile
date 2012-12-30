@@ -1,6 +1,6 @@
 # Sketch Makefile --------------------------------------------------------
 
-BIN = $(shell basename `pwd`)
+BIN = $(shell basename `pwd`).exe
 
 # Simduino Magic ---------------------------------------------------------
 

@@ -43,13 +43,13 @@ void digitalWrite(uint8_t p, uint8_t v) {
   debugf(" digitalWrite(%d, %d)\n", p, v);
 }
 
-int digitalRead(uint8_t v) {
-  debugf(" digitalRead(%d)\n", v);
+int digitalRead(uint8_t p) {
+  debugf(" digitalRead(%d)\n", p);
   return 0;
 }
 
-int analogRead(uint8_t v) {
-  debugf(" analogRead(%d)\n", v);
+int analogRead(uint8_t p) {
+  debugf(" analogRead(%d)\n", p);
   return 0;
 }
 

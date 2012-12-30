@@ -48,8 +48,8 @@ extern "C"{
 #include <stdio.h>
 #include <stdarg.h>
 
-# define debug(fmtstr) printf(fmtstr)
-# define debugf(fmtstr, ...) printf(fmtstr, __VA_ARGS__)
+# define debug(fmtstr) fprintf(stderr, fmtstr)
+# define debugf(fmtstr, ...) fprintf(stderr, fmtstr, __VA_ARGS__)
 
 #else
 

@@ -21,7 +21,7 @@ Build simduino the test sketches:
 ```
 $ cd simduino
 $ make
- Building tests/AccelStepper/Bounce
+ Building tests/Tutorial/00-BareMinimum
   cc main.cpp
   cc AccelStepper.cpp
   cc AFMotor.cpp
@@ -35,20 +35,21 @@ $ make
   cc Wire.cpp
   cc WString.cpp
   ld libSimduino.a
- Built Simduino
-  ld Bounce
- Building tests/AccelStepper/AFMotor_ConstantSpeed
+ Built libSimduino.a
+  ld 00-BareMinimum.exe
+ Building tests/Tutorial/01-Blink
   cc main.cpp
-  ld AFMotor_ConstantSpeed
- Building tests/AccelStepper/AFMotor_MultiStepper
+  ld 01-Blink.exe
+ Building tests/Tutorial/02-DigitalReadSerial
   cc main.cpp
-  ld AFMotor_MultiStepper
+  ld 02-DigitalReadSerial.exe
+[...]
 ```
 
 Run a test sketch from the command-line:
 
 ```
-$ tests/AccelStepper/Bounce/Bounce
+$ tests/AccelStepper/Bounce/Bounce.exe
  pinMode(2, 1)
  pinMode(3, 1)
  pinMode(4, 1)

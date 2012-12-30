@@ -9,7 +9,7 @@ CXXFLAGS += -std=c++11 -g -I. -pedantic
 # Main target ------------------------------------------------------------
 
 all: $(BIN)
-	@echo " Built Simduino"
+	@echo " Built $(BIN)"
 
 # Source files -----------------------------------------------------------
 

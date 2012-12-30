@@ -47,6 +47,7 @@ class HardwareSerial : public Stream
     uint8_t _u2x;
     bool transmitting;
     int _port; // the number of the serial device, i.e. 0..3
+	int _baud;
   public:
     HardwareSerial(int port);
 
