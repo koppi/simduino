@@ -6,8 +6,10 @@
 
 #define F_CPU 16000000UL
 
-// Atmega8
+#define __AVR_ATmega8__
+
 #include "iom8.h"
+#include "pins_arduino.h"
 
 // #define USART0_RX_vect
 

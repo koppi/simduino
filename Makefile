@@ -2,7 +2,9 @@
 
 TUTOR += 00-BareMinimum \
          01-Blink \
-         02-DigitalReadSerial
+         02-DigitalReadSerial \
+         03-AnalogReadSerial \
+         04-Fade
 
 TESTS += AccelStepper/Bounce \
          AccelStepper/AFMotor_ConstantSpeed \

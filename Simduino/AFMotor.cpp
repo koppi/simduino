@@ -83,6 +83,7 @@ static AFMotorController MC;
                MOTORS
 ******************************************/
 inline void initPWM1(uint8_t freq) {
+#if 0
 #if defined(__AVR_ATmega8__) || \
     defined(__AVR_ATmega48__) || \
     defined(__AVR_ATmega88__) || \
@@ -138,9 +139,13 @@ inline void initPWM1(uint8_t freq) {
     #if !defined(PIC32_USE_PIN9_FOR_M1_PWM) && !defined(PIC32_USE_PIN10_FOR_M1_PWM)
         pinMode(11, OUTPUT);
     #endif
+#endif
+		
+		debugf("initPWM1(%d)\n", freq);
 }
 
 inline void setPWM1(uint8_t s) {
+#if 0
 #if defined(__AVR_ATmega8__) || \
     defined(__AVR_ATmega48__) || \
     defined(__AVR_ATmega88__) || \
@@ -172,9 +177,12 @@ inline void setPWM1(uint8_t s) {
 #else
 		// #error "This chip is not supported!"
 #endif
+#endif
+		debugf("setPWM1(%d)\n", s);
 }
 
 inline void initPWM2(uint8_t freq) {
+#if 0
 #if defined(__AVR_ATmega8__) || \
     defined(__AVR_ATmega48__) || \
     defined(__AVR_ATmega88__) || \
@@ -206,9 +214,12 @@ inline void initPWM2(uint8_t freq) {
 #endif
 
     pinMode(3, OUTPUT);
+#endif
+debugf("initPWM2(%d)\n", freq);
 }
 
 inline void setPWM2(uint8_t s) {
+#if 0
 #if defined(__AVR_ATmega8__) || \
     defined(__AVR_ATmega48__) || \
     defined(__AVR_ATmega88__) || \
@@ -225,9 +236,12 @@ inline void setPWM2(uint8_t s) {
 #else
 	// #error "This chip is not supported!"
 #endif
+#endif
+debugf("setPWM2(%d)\n", s);
 }
 
 inline void initPWM3(uint8_t freq) {
+#if 0
 #if defined(__AVR_ATmega8__) || \
     defined(__AVR_ATmega48__) || \
     defined(__AVR_ATmega88__) || \
@@ -259,9 +273,12 @@ inline void initPWM3(uint8_t freq) {
 	// #error "This chip is not supported!"
 #endif
     pinMode(6, OUTPUT);
+#endif
+debugf("initPWM3(%d)\n", freq);
 }
 
 inline void setPWM3(uint8_t s) {
+#if 0
 #if defined(__AVR_ATmega8__) || \
     defined(__AVR_ATmega48__) || \
     defined(__AVR_ATmega88__) || \
@@ -278,11 +295,14 @@ inline void setPWM3(uint8_t s) {
 #else
 	// #error "This chip is not supported!"
 #endif
+#endif
+debugf("setPWM3(%d)\n", s);
 }
 
 
 
 inline void initPWM4(uint8_t freq) {
+#if 0
 #if defined(__AVR_ATmega8__) || \
     defined(__AVR_ATmega48__) || \
     defined(__AVR_ATmega88__) || \
@@ -313,10 +333,13 @@ inline void initPWM4(uint8_t freq) {
 #else
 	// #error "This chip is not supported!"
 #endif
+#endif
+debugf("initPWM4(%d)\n", freq);
     pinMode(5, OUTPUT);
 }
 
 inline void setPWM4(uint8_t s) {
+#if 0
 #if defined(__AVR_ATmega8__) || \
     defined(__AVR_ATmega48__) || \
     defined(__AVR_ATmega88__) || \
@@ -333,6 +356,8 @@ inline void setPWM4(uint8_t s) {
 #else
 	// #error "This chip is not supported!"
 #endif
+#endif
+debugf("setPWM4(%d)\n", s);
 }
 
 AF_DCMotor::AF_DCMotor(uint8_t num, uint8_t freq) {
