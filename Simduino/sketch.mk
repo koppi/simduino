@@ -10,9 +10,11 @@ LDFLAGS  += -g
 
 all: $(BIN)
 
-SRC = $(wildcard *.cpp)
-OBJ = $(SRC:.cpp=.o) $(SIMDUINO)/libSimduino.a
-DEP = $(SRC:.cpp=.d)
+SRC_CXX = $(wildcard *.cpp)
+SRC_C   = $(wildcard *.c)
+
+OBJ     = $(SRC_CXX:.cpp=.o) $(SRC_C:.c=.o) $(SIMDUINO)/libSimduino.a
+DEP     = $(SRC_CXX:.cpp=.d) $(SRC_C:.c=.d)
 
 $(BIN): $(OBJ)
 	$(Q)echo "  ld $@"
@@ -20,6 +22,13 @@ $(BIN): $(OBJ)
 
 $(SIMDUINO)/libSimduino.a:
 	$(Q)make -C $(SIMDUINO)
+
+.c.o:
+	$(Q)echo "  cc $<"
+	$(Q)$(CXX) -c $(CXXFLAGS) $<
+
+.c.d:
+	$(Q)$(CXX) $(CXXFLAGS) -MM -MD -o $@ $<
 
 .cpp.o:
 	$(Q)echo "  cc $<"
