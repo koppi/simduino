@@ -6,6 +6,7 @@
 
 #define F_CPU 16000000UL
 
+#define __AVR__
 #define __AVR_ATmega8__
 
 #include "iom8.h"
