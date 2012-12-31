@@ -7,13 +7,20 @@ MAKEFLAGS += --no-print-directory
 DIRS = $(shell find -mindepth 2 -name 'Makefile' -printf '%h\n' | sed -e 's/\.\///' | sort -u)
 
 DIRS_BUILD = $(DIRS:%=build-%)
+DIRS_TESTS = $(DIRS:%=tests-%)
 DIRS_CLEAN = $(DIRS:%=clean-%)
 
 all: $(DIRS_BUILD)
 
 $(DIRS_BUILD):
 	@echo " Building $(@:build-%=%)"
-	$(Q)$(MAKE) -C $(@:build-%=%)
+	$(Q)$(MAKE) -C $(@:build-%=%) all
+
+test: $(DIRS_TESTS)
+
+$(DIRS_TESTS):
+	@echo " Testing $(@:tests-%=%)"
+	$(Q)$(MAKE) -C $(@:tests-%=%) test
 
 clean: $(DIRS_CLEAN)
 
@@ -21,4 +28,4 @@ $(DIRS_CLEAN):
 	@echo " Cleaning $(@:clean-%=%)"
 	$(Q)$(MAKE) -C $(@:clean-%=%) clean
 
-.PHONY: $(DIRS_BUILD) clean $(DIRS_CLEAN)
+.PHONY: all $(DIRS_BUILD) test $(DIRS_TESTS) clean $(DIRS_CLEAN)

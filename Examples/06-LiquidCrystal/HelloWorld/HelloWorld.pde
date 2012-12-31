@@ -1,17 +1,10 @@
 #include <stddef.h>
 
-#include <linux/i2c-dev.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <alloca.h>
-#include <assert.h>
 
 #include "LiquidCrystal_I2C.h"
 
@@ -31,7 +24,11 @@ int setupSim(int argc, char **argv) {
 
   if (argc > 2)  {
 	fd = open(argv[1], O_RDWR);
-	assert(fd >= 0);
+	
+	if (fd < 0) {
+	  printf("error: unable to open I2C device. Exiting.\n");
+	  exit(1);
+	}
 
 	int i2c_addr = strtol(argv[2], NULL, 16);
 

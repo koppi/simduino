@@ -210,8 +210,11 @@ extern "C"{
 #define portModeRegister(P) ( )
 
   // Simulator prototypes
-  void shutdownSim(int signum);
+  extern unsigned long sim_loops;
+
   int setupSim(int argc, char** argv);
+  void loopSim(void);
+  void shutdownSim(int signum);
 
 #ifdef __cplusplus
 } // extern "C"

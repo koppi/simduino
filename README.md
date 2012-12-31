@@ -1,5 +1,7 @@
 # Simduino - run an Arduino sketch from the command-line
 
+![simduino.gif](https://github.com/koppi/simduino/wiki/simduino.gif)
+
 Features
 
 * Test out a sketch without the hardware, or prior to purchasing hardware.

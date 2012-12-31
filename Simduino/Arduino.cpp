@@ -30,6 +30,7 @@
 #include <inttypes.h>
 #include <unistd.h>
 #include <signal.h>
+#include <errno.h>
 
 #ifdef debugs
 # undef debugs
@@ -130,15 +131,53 @@ __attribute__((weak)) void beep(void) {
   debug("");
 }
 
-__attribute__((weak)) void shutdownSim(int signum)
+unsigned long sim_loops = 0;
+unsigned long sim_loop  = 0;
+
+__attribute__((weak)) int setupSim(int argc, char** argv)
 {
-  debugsf("\nshutdownSim(%d)\n", signum);
-  exit(signum);
+
+  if (!(argc > 1)) {
+    fprintf(stderr, "usage: %s [loops]\n\n", basename(argv[0]));
+    fprintf(stderr, "  [loops] - number of loops to run the sim for.\n");
+    fprintf(stderr, "\n");
+    return 1;
+  }
+
+  if (argc > 1) {
+    char * tmp;
+    sim_loops = strtol(argv[1], &tmp, 10);
+
+    if (errno != 0 || argv[1] == tmp || !(*tmp == '\0')) {
+      fprintf(stderr, "Error parsing [loops] - '%s' is not a numerical value.\n", argv[1]);
+      return 2;
+    }
+  }
+
+  return 0;
 }
 
-__attribute__((weak)) int setupSim(int, char**)
+__attribute__((weak)) void loopSim(void)
 {
-  return 0;
+  if (sim_loops > 0 && sim_loop >= sim_loops) {
+    shutdownSim(0);
+  }
+
+  if (sim_loops > 0) {
+    debugf("%d", sim_loop);
+  }
+
+  sim_loop++;
+}
+
+__attribute__((weak)) void shutdownSim(int signum)
+{
+  if (signum != 0) {
+	debugsf("\nshutdownSim(%d, %s)\n", signum, strsignal(signum));
+  } else {
+	debugsf("\nshutdownSim(%d)\n", signum);
+  }
+  exit(signum);
 }
 
 __attribute__((weak)) int main(int argc, char **argv) {
@@ -166,6 +205,7 @@ __attribute__((weak)) int main(int argc, char **argv) {
 
   debugs("loop()  enter\n");
   while(true) {
+	loopSim();
 	loop();
   }
 }

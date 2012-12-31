@@ -1,12 +1,18 @@
-LIBS_SIM += -L$(SIMDUINO) -Wl,-Bstatic -lSimduino
-LIBS     += $(LIBS_SIM) -Wl,-Bdynamic -lm -Wl,--as-needed
+B1;3400;0cLIBS_SIM  += -L$(SIMDUINO) -Wl,-Bstatic -lSimduino
+LIBS      += $(LIBS_SIM) -Wl,-Bdynamic -lm -Wl,--as-needed
 
-CXX       = g++
+CXX       ?= g++
 
-CXXFLAGS += -std=c++11 -g -pedantic -I$(SIMDUINO) -DSIM
-LDFLAGS  += -g
+CXXFLAGS  += -std=c++11 -g -pedantic -I$(SIMDUINO) -DSIM
+LDFLAGS   += -g
 
 -include $(SIMDUINO)/common.mk
+
+# test timeout in seconds. 10sec default
+TIMEOUT   ?= 10
+
+# the number of sim loops to run. 3 loops default
+TEST_ARGS ?= 3
 
 all: $(BIN)
 
@@ -16,6 +22,9 @@ SRC_C   = $(wildcard *.c)
 
 OBJ     = $(SRC_PDE:.pde=.o) $(SRC_CXX:.cpp=.o) $(SRC_C:.c=.o) $(SIMDUINO)/libSimduino.a
 DEP     = $(SRC_PDE:.pde=.d) $(SRC_CXX:.cpp=.d) $(SRC_C:.c=.d)
+
+test: $(BIN)
+	-$(Q)$(SIMDUINO)/timeout.sh $(TIMEOUT) ./$(BIN) $(TEST_ARGS)
 
 $(BIN): $(OBJ)
 	$(Q)echo "  ld $@"

@@ -2,6 +2,8 @@
 
 BIN = $(shell basename `pwd`).exe
 
+TEST_ARGS +=
+
 # Simduino Magic ---------------------------------------------------------
 
 SIMDUINO  = ../../../Simduino
