@@ -527,7 +527,7 @@
 #define UDRE	5
 #define FE	4
 #define DOR	3
-#define PE	2
+// #define PE	2
 #define U2X	1
 #define MPCM	0
 

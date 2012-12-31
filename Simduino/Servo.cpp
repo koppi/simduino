@@ -42,8 +42,9 @@
  
 */
 
-#include <avr/interrupt.h>
 #include <Arduino.h> 
+
+#include <avr/interrupt.h>
 
 #include "Servo.h"
 
@@ -97,6 +98,7 @@ static inline void handle_interrupts(timer16_Sequence_t timer, volatile uint16_t
   }
 }
 
+#ifndef SIM
 #ifndef WIRING // Wiring pre-defines signal handlers so don't define any if compiling for the Wiring platform
 // Interrupt handlers for Arduino 
 #if defined(_useTimer1)
@@ -142,7 +144,7 @@ void Timer3Service()
 }
 #endif
 #endif
-
+#endif
 
 static void initISR(timer16_Sequence_t timer)
 {  

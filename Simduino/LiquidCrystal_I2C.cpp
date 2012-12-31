@@ -33,7 +33,7 @@
 
 #include "I2CIO.h"
 
-#include "LCD_I2C.h"
+#include "LiquidCrystal_I2C.h"
 
 // CONSTANT  definitions
 // ---------------------------------------------------------------------------

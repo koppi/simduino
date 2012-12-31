@@ -544,6 +544,7 @@ typedef uint64_t  prog_uint64_t __attribute__((__progmem__,deprecated("prog_uint
     __result;                               \
 }))
 
+#ifndef SIM
 #if defined (__AVR_HAVE_LPMX__)
 #define __LPM(addr)         __LPM_enhanced__(addr)
 #define __LPM_word(addr)    __LPM_word_enhanced__(addr)
@@ -554,6 +555,12 @@ typedef uint64_t  prog_uint64_t __attribute__((__progmem__,deprecated("prog_uint
 #define __LPM_word(addr)    __LPM_word_classic__(addr)
 #define __LPM_dword(addr)   __LPM_dword_classic__(addr)
 #define __LPM_float(addr)   __LPM_float_classic__(addr)
+#endif
+#else
+#define __LPM(addr)         0
+#define __LPM_word(addr)    0
+#define __LPM_dword(addr)   0
+#define __LPM_float(addr)   0
 #endif
 
 /** \ingroup avr_pgmspace
