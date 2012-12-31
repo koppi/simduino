@@ -87,7 +87,8 @@ void HardwareSerial::flush()
 size_t HardwareSerial::write(uint8_t c)
 {
   printf("%c", c);
-  usleep((_baud / 10) * 100);
+  fflush(stdout);
+  usleep((_baud / 10) * 10);
   return 1;
 }
 

@@ -4,7 +4,7 @@
 
 MAKEFLAGS += --no-print-directory
 
-DIRS = $(shell find -mindepth 2 -name 'Makefile' -printf '%h\n' | sed -e 's/\.\///')
+DIRS = $(shell find -mindepth 2 -name 'Makefile' -printf '%h\n' | sed -e 's/\.\///' | sort -u)
 
 DIRS_BUILD = $(DIRS:%=build-%)
 DIRS_CLEAN = $(DIRS:%=clean-%)
