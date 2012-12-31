@@ -52,7 +52,7 @@ void HardwareSerial::begin(unsigned long baud)
 
 void HardwareSerial::begin(unsigned long baud, byte config)
 {
-  debugf("%d, %lu, %d\n", _port, baud, config);
+  debugf("%lu, %d\n", baud, config);
   _baud = baud;
 }
 
@@ -76,7 +76,7 @@ int HardwareSerial::peek(void)
 int HardwareSerial::read(void)
 {
   debugf("%d", _port);
-  usleep((_baud / 10) * 100);
+  usleep( 1000 / ((_baud / 1000 / 10)) );
 }
 
 void HardwareSerial::flush()
@@ -88,7 +88,7 @@ size_t HardwareSerial::write(uint8_t c)
 {
   printf("%c", c);
   fflush(stdout);
-  usleep((_baud / 10) * 10);
+  usleep( 10 * 1000 * (10000 / (_baud / 10.0)) );
   return 1;
 }
 
