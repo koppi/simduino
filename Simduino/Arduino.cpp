@@ -89,7 +89,7 @@ __attribute__((weak)) unsigned long micros(void) {
 }
 
 __attribute__((weak)) unsigned long millis(void) {
-  debug("");
+  // debug("");
   return micros() * 1000;
 }
 
