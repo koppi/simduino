@@ -46,42 +46,42 @@ HardwareSerial::HardwareSerial(int port) {
 
 void HardwareSerial::begin(unsigned long baud)
 {
-  debugf("Serial%d::begin(%lu)\n", _port, baud);
+  debugf("%lu", baud);
   _baud = baud;
 }
 
 void HardwareSerial::begin(unsigned long baud, byte config)
 {
-  debugf("Serial%d::begin(%lu, %d)\n", _port, baud, config);
+  debugf("%d, %lu, %d\n", _port, baud, config);
   _baud = baud;
 }
 
 void HardwareSerial::end()
 {
-  debugf("Serial%d::end()\n", _port);
+  debugf("%d", _port);
 }
 
 int HardwareSerial::available(void)
 {
-  debugf("Serial%d::available()\n", _port);
+  debugf("%d", _port);
   return 0;
 }
 
 int HardwareSerial::peek(void)
 {
-  debugf("Serial%d::peek()\n", _port);
+  debugf("%d", _port);
   return -1;
 }
 
 int HardwareSerial::read(void)
 {
-  debugf("Serial%d::read()\n", _port);
+  debugf("%d", _port);
   usleep((_baud / 10) * 100);
 }
 
 void HardwareSerial::flush()
 {
-  debugf("Serial%d::flush()\n", _port);
+  debugf("%d", _port);
 }
 
 size_t HardwareSerial::write(uint8_t c)

@@ -59,7 +59,7 @@ void pinMode(uint8_t p, uint8_t mode)
 
 void digitalWrite(uint8_t p, uint8_t v)
 {
-  debugf("digitalWrite(%d, %d)\n", p, v);
+  debugf("%d, %d", p, v);
 
   if (p >= 2 && p <= 9) {
 	if (io) io->digitalWrite(p-2, v);

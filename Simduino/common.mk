@@ -1,3 +1,4 @@
+#  do not print directories
 export MAKEFLAGS += --no-print-directory
 
 # Avoid funny character set dependencies

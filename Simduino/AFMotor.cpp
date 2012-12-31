@@ -141,7 +141,7 @@ inline void initPWM1(uint8_t freq) {
     #endif
 #endif
 		
-		debugf("initPWM1(%d)\n", freq);
+		debugf("%d", freq);
 }
 
 inline void setPWM1(uint8_t s) {
@@ -178,7 +178,7 @@ inline void setPWM1(uint8_t s) {
 		// #error "This chip is not supported!"
 #endif
 #endif
-		debugf("setPWM1(%d)\n", s);
+		debugf("%d", s);
 }
 
 inline void initPWM2(uint8_t freq) {
@@ -215,7 +215,7 @@ inline void initPWM2(uint8_t freq) {
 
     pinMode(3, OUTPUT);
 #endif
-debugf("initPWM2(%d)\n", freq);
+debugf("%d", freq);
 }
 
 inline void setPWM2(uint8_t s) {
@@ -237,7 +237,7 @@ inline void setPWM2(uint8_t s) {
 	// #error "This chip is not supported!"
 #endif
 #endif
-debugf("setPWM2(%d)\n", s);
+debugf("%d", s);
 }
 
 inline void initPWM3(uint8_t freq) {
@@ -274,7 +274,7 @@ inline void initPWM3(uint8_t freq) {
 #endif
     pinMode(6, OUTPUT);
 #endif
-debugf("initPWM3(%d)\n", freq);
+debugf("%d", freq);
 }
 
 inline void setPWM3(uint8_t s) {
@@ -296,7 +296,7 @@ inline void setPWM3(uint8_t s) {
 	// #error "This chip is not supported!"
 #endif
 #endif
-debugf("setPWM3(%d)\n", s);
+debugf("%d", s);
 }
 
 
@@ -334,7 +334,7 @@ inline void initPWM4(uint8_t freq) {
 	// #error "This chip is not supported!"
 #endif
 #endif
-debugf("initPWM4(%d)\n", freq);
+debugf("%d", freq);
     pinMode(5, OUTPUT);
 }
 
@@ -357,7 +357,7 @@ inline void setPWM4(uint8_t s) {
 	// #error "This chip is not supported!"
 #endif
 #endif
-debugf("setPWM4(%d)\n", s);
+debugf("%d", s);
 }
 
 AF_DCMotor::AF_DCMotor(uint8_t num, uint8_t freq) {

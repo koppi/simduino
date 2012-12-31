@@ -23,17 +23,17 @@ DEP = $(SRC:.cpp=.d)
 
 # Compile targets --------------------------------------------------------
 
-$(BIN): $(OBJ) Makefile
+$(BIN): $(OBJ) makefile
 	@echo "  ld $@"
 	$(Q)$(AR) rcs $@ $^
 
-.cpp.o: Makefile
+.cpp.o: makefile
 	@echo "  cc $<"
 	$(Q)$(CXX) -c $(CXXFLAGS) $<
 
 # Dependency resolution targets ------------------------------------------
 
-.cpp.d: Makefile
+.cpp.d: makefile
 	$(Q)$(CXX) $(CXXFLAGS) -MM -MD -o $@ $<
 
 -include $(DEP)

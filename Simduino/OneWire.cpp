@@ -127,15 +127,9 @@ uint8_t OneWire::reset(void)
 	uint8_t r;
 	uint8_t retries = 125;
 
-#ifndef SIM
 	noInterrupts();
-#endif
-
 	DIRECT_MODE_INPUT(reg, mask);
-
-#ifndef SIM
 	interrupts();
-#endif
 	// wait until the wire is high... just in case
 	do {
 		if (--retries == 0) return 0;
@@ -166,16 +160,12 @@ void OneWire::write_bit(uint8_t v)
 	volatile IO_REG_TYPE *reg IO_REG_ASM = baseReg;
 
 	if (v & 1) {
-#ifndef SIM
 		noInterrupts();
-#endif
 		DIRECT_WRITE_LOW(reg, mask);
 		DIRECT_MODE_OUTPUT(reg, mask);	// drive output low
 		delayMicroseconds(10);
 		DIRECT_WRITE_HIGH(reg, mask);	// drive output high
-#ifndef SIM
 		interrupts();
-#endif
 		delayMicroseconds(55);
 	} else {
 		noInterrupts();

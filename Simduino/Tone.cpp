@@ -226,7 +226,7 @@ static int8_t toneBegin(uint8_t _pin)
 
   return _timer;
 #else
-  debugf(" toneBegin(%d)\n", _pin);
+  debugf("%d", _pin);
   return 0;
 #endif
 }
@@ -414,7 +414,7 @@ __attribute__((weak)) void tone(uint8_t _pin, unsigned int frequency, unsigned l
     }
   }
 #else
-  debugf(" tone(%d, %d, %lu)\n", _pin, frequency, duration);
+  debugf("%d, %d, %lu", _pin, frequency, duration);
 #endif
 }
 
@@ -494,7 +494,7 @@ __attribute__((weak)) void noTone(uint8_t _pin)
 
   digitalWrite(_pin, 0);
 #else
-debugf(" noTone(%d)\n", _pin);
+debugf("%d", _pin);
 #endif
 }
 

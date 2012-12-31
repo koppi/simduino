@@ -3,7 +3,7 @@ LIBS     += $(LIBS_SIM) -Wl,-Bdynamic -lm -Wl,--as-needed
 
 CXX       = g++
 
-CXXFLAGS += -std=c++11 -g -pedantic -I$(SIMDUINO)
+CXXFLAGS += -std=c++11 -g -pedantic -I$(SIMDUINO) -DSIM
 LDFLAGS  += -g
 
 -include $(SIMDUINO)/common.mk

@@ -57,7 +57,7 @@ int I2CIO::begin (  uint8_t i2cAddr )
    _i2cAddr = i2cAddr;
 
    if (!(_wire->address(_i2cAddr))) {
-	 debugf("I2CIO::begin() - Error, no slave at address 0x%X.\n", _i2cAddr);
+	 debugf("Error, no slave at address 0x%X", _i2cAddr);
 	 _initialised = false;
    } else {
 	 _initialised = true;

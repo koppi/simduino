@@ -10,6 +10,16 @@
 #include "pins_arduino.h"  // for digitalPinToBitMask, etc
 #endif
 
+#ifdef debug
+# undef debug
+# define debug(fmtstr) fprintf(stderr, BLUE " " fmtstr RESET)
+#endif
+
+#ifdef debugf
+# undef debugf
+# define debugf(fmtstr, ...) fprintf(stderr, BLUE " " fmtstr RESET, __VA_ARGS__)
+#endif
+
 // You can exclude certain features from OneWire.  In theory, this
 // might save some space.  In practice, the compiler automatically
 // removes unused code (technically, the linker, using -fdata-sections
@@ -51,6 +61,7 @@
 // Platform specific I/O definitions
 
 #if defined(__AVR__)
+#ifndef SIM
 #define PIN_TO_BASEREG(pin)             (portInputRegister(digitalPinToPort(pin)))
 #define PIN_TO_BITMASK(pin)             (digitalPinToBitMask(pin))
 #define IO_REG_TYPE uint8_t
@@ -60,8 +71,19 @@
 #define DIRECT_MODE_OUTPUT(base, mask)  ((*(base+1)) |= (mask))
 #define DIRECT_WRITE_LOW(base, mask)    ((*(base+2)) &= ~(mask))
 #define DIRECT_WRITE_HIGH(base, mask)   ((*(base+2)) |= (mask))
-
+#else
+#define PIN_TO_BASEREG(pin)             (portInputRegister(digitalPinToPort(pin)))
+#define PIN_TO_BITMASK(pin)             (digitalPinToBitMask(pin))
+#define IO_REG_TYPE uint8_t
+#define IO_REG_ASM asm("r30")           
+#define DIRECT_READ(base, mask)         (true)
+#define DIRECT_MODE_INPUT(base, mask)   (debugf(" OneWire::DIRECT_MODE_INPUT(%d)\n", mask))
+#define DIRECT_MODE_OUTPUT(base, mask)  (debugf(" OneWire::DIRECT_MODE_OUTPUT(%d)\n", mask))
+#define DIRECT_WRITE_LOW(base, mask)    (debugf(" OneWire::DIRECT_WRITE_LOW(%d)\n", mask))
+#define DIRECT_WRITE_HIGH(base, mask)   (debugf(" OneWire::DIRECT_WRITE_HIGH(%d)\n", mask))
+#endif
 #elif defined(__PIC32MX__)
+#ifndef SIM
 #include <plib.h>  // is this necessary?
 #define PIN_TO_BASEREG(pin)             (portModeRegister(digitalPinToPort(pin)))
 #define PIN_TO_BITMASK(pin)             (digitalPinToBitMask(pin))
@@ -72,6 +94,17 @@
 #define DIRECT_MODE_OUTPUT(base, mask)  ((*(base+1)) = (mask))            //TRISXCLR + 0x04
 #define DIRECT_WRITE_LOW(base, mask)    ((*(base+8+1)) = (mask))          //LATXCLR  + 0x24
 #define DIRECT_WRITE_HIGH(base, mask)   ((*(base+8+2)) = (mask))          //LATXSET + 0x28
+#else
+#define PIN_TO_BASEREG(pin)             (portInputRegister(digitalPinToPort(pin)))
+#define PIN_TO_BITMASK(pin)             (digitalPinToBitMask(pin))
+#define IO_REG_TYPE uint8_t
+#define IO_REG_ASM asm("r30")           
+#define DIRECT_READ(base, mask)         (true)
+#define DIRECT_MODE_INPUT(base, mask)   (debugf(" OneWire::DIRECT_MODE_INPUT(%d)\n", mask))
+#define DIRECT_MODE_OUTPUT(base, mask)  (debugf(" OneWire::DIRECT_MODE_OUTPUT(%d)\n", mask))
+#define DIRECT_WRITE_LOW(base, mask)    (debugf(" OneWire::DIRECT_WRITE_LOW(%d)\n", mask))
+#define DIRECT_WRITE_HIGH(base, mask)   (debugf(" OneWire::DIRECT_WRITE_HIGH(%d)\n", mask))
+#endif
 
 #else
 #error "Please define I/O register types here"
