@@ -32,6 +32,8 @@
 #ifndef _AFMotor_h_
 #define _AFMotor_h_
 
+#include <Arduino.h>
+
 #include <inttypes.h>
 
 //#define MOTORDEBUG 1
