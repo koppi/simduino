@@ -120,9 +120,9 @@ __attribute__((weak)) void beep(void) {
   debug(" beep()\n");
 }
 
-__attribute__((weak)) void shutdown(int signum)
+__attribute__((weak)) void shutdownSim(int signum)
 {
-  debugf(" shutdown(%d)\n", signum);
+  debugf(" shutdownSim(%d)\n", signum);
   exit(signum);
 }
 
@@ -132,8 +132,8 @@ __attribute__((weak)) int setupSim(int, char**)
 }
 
 __attribute__((weak)) int main(int argc, char **argv) {
-  signal(SIGINT, shutdown);
-  signal(SIGQUIT, shutdown);
+  signal(SIGINT, shutdownSim);
+  signal(SIGQUIT, shutdownSim);
 
   int i, res;
 
@@ -159,3 +159,35 @@ __attribute__((weak)) int main(int argc, char **argv) {
 	loop();
   }
 }
+
+void randomSeed(unsigned int seed)
+{
+  if (seed != 0) {
+    srandom(seed);
+  }
+}
+
+long random(long howbig)
+{
+  if (howbig == 0) {
+    return 0;
+  }
+  return random() % howbig;
+}
+
+long random(long howsmall, long howbig)
+{
+  if (howsmall >= howbig) {
+    return howsmall;
+  }
+  long diff = howbig - howsmall;
+  return random(diff) + howsmall;
+}
+
+long map(long x, long in_min, long in_max, long out_min, long out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+uint16_t makeWord(unsigned int w) { return w; }
+uint16_t makeWord(unsigned char h, unsigned char l) { return (h << 8) | l; }

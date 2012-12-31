@@ -63,6 +63,7 @@ extern "C"{
   
 #define INPUT 0x0
 #define OUTPUT 0x1
+#define INPUT_PULLUP 0x2
   
 #define true 0x1
 #define false 0x0
@@ -167,16 +168,38 @@ extern "C"{
   
   void setup(void);
   void loop(void);
-  void shutdown(int signum);
 
+  // Simulator prototypes
+  void shutdownSim(int signum);
   int setupSim(int argc, char** argv);
 
-  void beep();
-  
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#include <HardwareSerial.h>
+#ifdef __cplusplus
+#include "WCharacter.h"
+#include "WString.h"
+#include "HardwareSerial.h"
+
+uint16_t makeWord(uint16_t w);
+uint16_t makeWord(byte h, byte l);
+
+#define word(...) makeWord(__VA_ARGS__)
+
+unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout = 1000000L);
+
+void tone(uint8_t _pin, unsigned int frequency, unsigned long duration = 0);
+void noTone(uint8_t _pin);
+
+// WMath prototypes                                                            
+long random(long);
+long random(long, long);
+void randomSeed(unsigned int);
+long map(long, long, long, long, long);
+
+#endif
+
+#include "pins_arduino.h"
 
 #endif

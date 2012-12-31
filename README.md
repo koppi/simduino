@@ -64,7 +64,7 @@ loop() enter
  digitalWrite(4, 0)
  digitalWrite(5, 1)
 [...]
-^C shutdown(2)
+^C shutdownSim(2)
 ```
 
 Press CTRL+C to terminate the program. Have fun!

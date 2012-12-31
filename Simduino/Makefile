@@ -6,7 +6,7 @@ BIN = libSimduino.a
 
 CXX      ?= g++
 AR       ?= ar
-CXXFLAGS += -std=c++11 -g -I. -pedantic
+CXXFLAGS += -std=c++11 -g -I. -pedantic -DSIM
 
 # Main target ------------------------------------------------------------
 
