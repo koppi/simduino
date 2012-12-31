@@ -1,12 +1,34 @@
-B1;3400;0cLIBS_SIM  += -L$(SIMDUINO) -Wl,-Bstatic -lSimduino
+-include $(SIMDUINO)/common.mk
+
+# Some extra libraries --------------------------------------------------------
+
+ifeq ($(shell pkg-config --exists sdl && echo "1" || echo "0"), 1)
+CXXFLAGS  += $(shell pkg-config --cflags sdl)
+LIBS      += $(shell pkg-config --libs   sdl)
+CXXFLAGS  += -DHAVE_SDL
+endif
+
+ifeq ($(shell pkg-config --exists SDL_gfx && echo "1" || echo "0"), 1)
+CXXFLAGS  += $(shell pkg-config --cflags SDL_gfx)
+LIBS      += $(shell pkg-config --libs   SDL_gfx)
+CXXFLAGS  += -DHAVE_SDL_GFX
+endif
+
+ifeq ($(shell pkg-config --exists SDL_ttf && echo "1" || echo "0"), 1)
+CXXFLAGS  += $(shell pkg-config --cflags SDL_ttf)
+LIBS      += $(shell pkg-config --libs   SDL_ttf)
+CXXFLAGS  += -DHAVE_SDL_TTF
+endif
+
+# -----------------------------------------------------------------------------
+
+LIBS_SIM  += -L$(SIMDUINO) -Wl,-Bstatic -lSimduino
 LIBS      += $(LIBS_SIM) -Wl,-Bdynamic -lm -Wl,--as-needed
 
 CXX       ?= g++
 
 CXXFLAGS  += -std=c++11 -g -pedantic -I$(SIMDUINO) -DSIM
 LDFLAGS   += -g
-
--include $(SIMDUINO)/common.mk
 
 # test timeout in seconds. 10sec default
 TIMEOUT   ?= 10
