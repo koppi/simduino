@@ -11,29 +11,104 @@
  * setupSim(argc, argv) - is called during the startup of the simulator.
  * pinMode(pin, mode)   - maps the Arduino pin 13 to I2C port expander pin 0.
  * digitalWrite(p, val) - maps the Arduino pin 13 to I2C port expander pin 0. 
- *
- * usage: 01-Blink.exe [/dev/i2c-?] [I2C address]
- *
- * Example:
- *
- * 01-Blink.exe /dev/i2c-9 0x38
- *
  */
+
+#ifdef HAVE_SDL
+#include <SDL/SDL.h>
+#include <timer.h>
+#ifdef HAVE_SDL_GFX
+#include <SDL/SDL_gfxPrimitives.h>
+#endif
+
+#ifdef HAVE_SDL_TTF
+#include <SDL/SDL_ttf.h>
+#endif
+
+static TTF_Font *font = NULL;
+
+#define PIX_SIZE 128*2
+
+SDL_Surface *sdl_init(char *title)
+{
+  Uint8 video_bpp;
+  Uint32 videoflags;
+  SDL_Surface *screen;
+  int w = PIX_SIZE, h = PIX_SIZE;
+  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	fprintf(stderr, "can't initialize SDL video\n");
+	exit(1);
+  }
+
+  // atexit(SDL_Quit);
+  
+  TTF_Init();
+  font =
+	TTF_OpenFont
+	("/usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono.ttf", PIX_SIZE);
+
+  assert(font);
+  
+  video_bpp = 32;
+  videoflags = SDL_HWSURFACE | SDL_DOUBLEBUF /*| SDL_FULLSCREEN */ ;
+  
+  if ((screen = SDL_SetVideoMode(w, h, video_bpp, videoflags)) == NULL) {
+	fprintf(stderr, "Error: Can't set video mode %dx%d\n", w, h);
+	exit(2);
+  }
+  
+  SDL_WM_SetCaption(title, title);
+  
+  return screen;
+}
+
+void sdl_draw(SDL_Surface * sf, uint8_t port, uint8_t pin, uint8_t value)
+{
+  SDL_Color fg_black = { 0, 0, 0 };
+  SDL_Color fg_white = { 255, 255, 255 };
+  SDL_Rect rect;
+  SDL_Surface *txt_sf;
+  
+  char buf[32];
+  
+  SDL_FillRect(sf, NULL, 0);
+  
+  sprintf(buf, "%d", value);
+  txt_sf = TTF_RenderText_Blended(font, buf, fg_white);
+
+  rect.w = txt_sf->w;
+  rect.h = txt_sf->h;
+  rect.x =  PIX_SIZE /  5.75 + PIX_SIZE * pin;
+  rect.y = -PIX_SIZE / 12.00 + PIX_SIZE * port;
+
+  SDL_BlitSurface(txt_sf, NULL, sf, &rect);
+  SDL_FreeSurface(txt_sf);
+  
+  SDL_Flip(sf);
+}
+
+#endif
+
 
 #define dbgf(fmt, ...) fprintf(stderr, YELLOW "%s(" fmt ")" RESET "\n", __FUNCTION__, __VA_ARGS__)
 #define dbg(fmt) fprintf(stderr, YELLOW fmt "%s()" RESET "\n", __FUNCTION__)
 
 I2CIO *io;
 
+#ifdef HAVE_SDL
+int quit = 0;
+SDL_Surface *screen;
+int sdl_mouse_x, sdl_mouse_y;
+#endif
+
 int setupSim(int argc, char** argv)
 {
   int fd;
 
   if (!(argc > 1)) {
-	fprintf(stderr, "usage: %s [loops] [I2C device] [I2C address]\n\n", basename(argv[0]));
-	fprintf(stderr, "  [loops]       - number of loops to run the sim for.\n");
-	fprintf(stderr, "  [I2C device]  - the I2C device, e.g. '/dev/i2c-1'\n");
-	fprintf(stderr, "  [IC2 address] - the I2C address in hex, e.g. '0x30'\n");
+	fprintf(stderr, YELLOW "usage: " GREEN "%s" YELLOW " [loops] [I2C device] [I2C address]" RESET "\n\n", basename(argv[0]));
+	fprintf(stderr, YELLOW "  [loops] " RESET "      - number of loops to run the sim for.\n");
+	fprintf(stderr, YELLOW "  [I2C device] " RESET " - the I2C device, e.g. '/dev/i2c-1'\n");
+	fprintf(stderr, YELLOW "  [IC2 address] " RESET "- the I2C address in hex, e.g. '0x30'\n");
 	fprintf(stderr, "\n");
 	return 1;
   }
@@ -78,6 +153,15 @@ int setupSim(int argc, char** argv)
   io->portMode(OUTPUT);
   io->write(0xff);
 
+#ifdef HAVE_SDL
+  screen = sdl_init(basename(argv[0]));
+
+  if (start_timer(100, &loopSim)) {
+    printf("\n timer error\n");
+    return 6;
+  }
+#endif
+
   return 0;
 }
 
@@ -90,9 +174,64 @@ void pinMode(uint8_t p, uint8_t mode)
 
 void digitalWrite(uint8_t p, uint8_t v)
 {
+
   debugf("%d, %d", p, v);
 
   if (p == 13) {
 	io->digitalWrite(0, v);
+
+#ifdef HAVE_SDL
+	sdl_draw(screen, 0, 0, v);
+#endif
   }
+}
+
+#ifdef HAVE_SDL
+void loopSim()
+{
+  // debug("");
+  
+  SDL_Event evt;
+
+  SDL_GetMouseState(&sdl_mouse_x, &sdl_mouse_y);
+
+  while (SDL_PollEvent(&evt)) {
+	if (evt.type == SDL_KEYDOWN) {
+	  switch (evt.key.keysym.sym) {
+	  case SDLK_q:
+	  case SDLK_ESCAPE:
+		quit = 1;
+		break;
+	  default:
+		break;
+	  }
+	} else if (evt.type == SDL_QUIT) {
+	  quit = 1;
+	}
+  }
+  
+  if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1))
+	printf("Mouse Button 1 (left) is pressed.\n");
+
+  if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(3))
+	printf("Mouse Button 3 (right) is pressed.\n");
+
+  if (quit == 1) {
+	shutdownSim(0);
+  }
+}
+#endif
+
+void shutdownSim(int signum) {
+  stop_timer();
+
+  if (signum != 0) {
+    debugsf(YELLOW "\nshutdownSim(%d, %s)\n" RESET, signum, strsignal(signum));
+  } else {
+    debugsf(YELLOW "\nshutdownSim(%d)\n" RESET, signum);
+  }
+
+  SDL_Quit();
+
+  exit(signum);
 }

@@ -96,12 +96,20 @@ __attribute__((weak)) unsigned long millis(void) {
 
 __attribute__((weak)) void delay(unsigned long t) {
   debugf("%lu", t);
-  usleep(t * 1000);
+
+  struct timespec timeout;
+  timeout.tv_sec = t;
+  timeout.tv_nsec = 0;
+  while (nanosleep(&timeout, &timeout) && errno == EINTR);
 }
 
 __attribute__((weak)) void delayMicroseconds(unsigned int us) {
   debugf("%d", us);
-  usleep(us);
+
+  struct timespec timeout;
+  timeout.tv_sec = 0;
+  timeout.tv_nsec = us * 1000;
+  while (nanosleep(&timeout, &timeout) && errno == EINTR);
 }
 
 __attribute__((weak)) unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout) {

@@ -2,7 +2,7 @@
 
 BIN = $(shell basename `pwd`).exe
 
-TEST_ARGS +=
+TEST_ARGS += 1
 
 # Simduino Magic ---------------------------------------------------------
 
