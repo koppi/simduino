@@ -1,6 +1,8 @@
 -include $(SIMDUINO)/common.mk
 
-# Some extra libraries --------------------------------------------------------
+# Some extra libraries -------------------------------------------------------
+
+ifeq ($(SDL), 1)
 
 ifeq ($(shell pkg-config --exists sdl && echo "1" || echo "0"), 1)
 CXXFLAGS  += $(shell pkg-config --cflags sdl)
@@ -25,6 +27,8 @@ CXXFLAGS  += $(shell pkg-config --cflags SDL_ttf)
 LIBS      += $(shell pkg-config --libs   SDL_ttf)
 CXXFLAGS  += -DHAVE_SDL_TTF
 endif
+
+endif # ifeq(SDL,1)
 
 # -----------------------------------------------------------------------------
 

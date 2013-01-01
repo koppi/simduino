@@ -152,7 +152,7 @@ int setupSim(int argc, char** argv)
 {
   int fd;
 
-  if (!(argc > 1)) {
+  if (!(argc > 0)) {
 	fprintf(stderr, YELLOW "usage: " GREEN "%s" YELLOW " [loops] [I2C device] [I2C address]" RESET "\n\n", basename(argv[0]));
 	fprintf(stderr, YELLOW "  [loops] " RESET "      - number of loops to run the sim for.\n");
 	fprintf(stderr, YELLOW "  [I2C device] " RESET " - the I2C device, e.g. '/dev/i2c-1'\n");
@@ -169,6 +169,8 @@ int setupSim(int argc, char** argv)
 	  fprintf(stderr, "Error parsing [loops] - '%s' is not a numerical value.\n", argv[1]);
 	  return 2;
 	}
+  } else {
+	sim_loops = 0;
   }
 
   if (argc > 2) {
@@ -240,10 +242,13 @@ void digitalWrite(uint8_t p, uint8_t v)
 }
 
 #ifdef HAVE_SDL
+
+unsigned long _loop = 0;
+
 void loopSim()
 {
   // debug("");
-  
+
   SDL_Event evt;
 
   SDL_GetMouseState(&sdl_mouse_x, &sdl_mouse_y);
@@ -269,22 +274,30 @@ void loopSim()
   if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(3))
 	printf("Mouse Button 3 (right) is pressed.\n");
 
-  if (quit == 1) {
-	shutdownSim(0);
+  if (quit == 1 || (sim_loops > 0 && _loop >= sim_loops)) {
+    shutdownSim(0);
   }
+  
+  if (sim_loops > 0) {
+    debugf("%lu", _loop);
+  }
+
+  _loop++;
 }
 #endif
 
 void shutdownSim(int signum) {
+
+#ifdef HAVE_SDL
   stop_timer();
+  SDL_Quit();
+#endif
 
   if (signum != 0) {
     debugf(YELLOW "%d, %s" GREEN, signum, strsignal(signum));
   } else {
     debugf(YELLOW "%d" GREEN, signum);
   }
-
-  SDL_Quit();
 
   exit(signum);
 }
