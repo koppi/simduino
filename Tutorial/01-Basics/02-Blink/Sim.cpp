@@ -16,19 +16,24 @@
 #ifdef HAVE_SDL
 #include <SDL/SDL.h>
 #include <timer.h>
+
 #ifdef HAVE_SDL_GFX
-#include <SDL/SDL_gfxPrimitives.h>
+#include <SDL_gfxPrimitives.h>
+#endif
+
+#ifdef HAVE_SDL_IMAGE
+#include <SDL_image.h>
 #endif
 
 #ifdef HAVE_SDL_TTF
-#include <SDL/SDL_ttf.h>
+#include <SDL_ttf.h>
 #endif
 
 static TTF_Font *font = NULL;
 
-#define PIX_SIZE 128*2
+#define PIX_SIZE 128
 
-SDL_Surface *sdl_init(char *title)
+SDL_Surface *sdl_init(const char *title)
 {
   Uint8 video_bpp;
   Uint32 videoflags;
@@ -61,6 +66,36 @@ SDL_Surface *sdl_init(char *title)
   return screen;
 }
 
+#ifdef HAVE_SDL_IMAGE
+
+SDL_Surface *sdl_img_load(const char* filename)
+{
+  // Image loaded
+  SDL_Surface* loadedimage = NULL;
+
+  // Image to be used
+  SDL_Surface* usedimage = NULL;
+
+  //Loads Image
+  loadedimage = IMG_Load(filename);
+
+  //Creates image to be used
+  if(loadedimage != NULL)
+	{
+	  //Puts the file in a SDL acceptable format
+	  usedimage = SDL_DisplayFormat(loadedimage);
+	  //Frees the old surface
+	  SDL_FreeSurface(loadedimage);
+	}
+
+  //Returns the final image
+  return usedimage;
+}
+
+SDL_Surface * sdl_led_on, * sdl_led_off;
+
+#endif
+
 void sdl_draw(SDL_Surface * sf, uint8_t port, uint8_t pin, uint8_t value)
 {
   SDL_Color fg_black = { 0, 0, 0 };
@@ -70,8 +105,9 @@ void sdl_draw(SDL_Surface * sf, uint8_t port, uint8_t pin, uint8_t value)
   
   char buf[32];
   
-  SDL_FillRect(sf, NULL, 0);
-  
+  SDL_FillRect(sf, NULL, 0xFFFFFF);
+
+#ifndef HAVE_SDL_IMAGE  
   sprintf(buf, "%d", value);
   txt_sf = TTF_RenderText_Blended(font, buf, fg_white);
 
@@ -82,6 +118,18 @@ void sdl_draw(SDL_Surface * sf, uint8_t port, uint8_t pin, uint8_t value)
 
   SDL_BlitSurface(txt_sf, NULL, sf, &rect);
   SDL_FreeSurface(txt_sf);
+#else
+
+  rect.x = rect.y = 0;
+  rect.w = sf->w;
+  rect.h = sf->h;
+
+  if (value == 0) {
+	SDL_BlitSurface(sdl_led_off, NULL, sf, &rect);
+  } else {
+	SDL_BlitSurface(sdl_led_on,  NULL, sf, &rect);
+  }
+#endif
   
   SDL_Flip(sf);
 }
@@ -156,6 +204,11 @@ int setupSim(int argc, char** argv)
 #ifdef HAVE_SDL
   screen = sdl_init(basename(argv[0]));
 
+#ifdef HAVE_SDL_IMAGE
+  sdl_led_on = sdl_img_load("red-led-on.png");
+  sdl_led_off = sdl_img_load("red-led-off.png");
+#endif
+
   if (start_timer(100, &loopSim)) {
     printf("\n timer error\n");
     return 6;
@@ -226,9 +279,9 @@ void shutdownSim(int signum) {
   stop_timer();
 
   if (signum != 0) {
-    debugsf(YELLOW "\nshutdownSim(%d, %s)\n" RESET, signum, strsignal(signum));
+    debugf(YELLOW "%d, %s" GREEN, signum, strsignal(signum));
   } else {
-    debugsf(YELLOW "\nshutdownSim(%d)\n" RESET, signum);
+    debugf(YELLOW "%d" GREEN, signum);
   }
 
   SDL_Quit();

@@ -94,22 +94,35 @@ __attribute__((weak)) unsigned long millis(void) {
   return micros() * 1000;
 }
 
+int msleep(unsigned long msec)
+{
+
+  struct timespec timeout0;
+  struct timespec timeout1;
+  struct timespec* tmp;
+  struct timespec* t0 = &timeout0;
+  struct timespec* t1 = &timeout1;
+
+  t0->tv_sec = msec / 1000;
+  t0->tv_nsec = (msec % 1000) * (1000 * 1000);
+
+  while (nanosleep(t0, t1) == -1 && errno == EINTR) {
+	tmp = t0;
+	t0 = t1;
+	t1 = tmp;
+  }
+
+  return 1;
+}
+
 __attribute__((weak)) void delay(unsigned long t) {
   debugf("%lu", t);
-
-  struct timespec timeout;
-  timeout.tv_sec = t;
-  timeout.tv_nsec = 0;
-  while (nanosleep(&timeout, &timeout) && errno == EINTR);
+  msleep(t);
 }
 
 __attribute__((weak)) void delayMicroseconds(unsigned int us) {
   debugf("%d", us);
-
-  struct timespec timeout;
-  timeout.tv_sec = 0;
-  timeout.tv_nsec = us * 1000;
-  while (nanosleep(&timeout, &timeout) && errno == EINTR);
+  msleep(us / 1000);
 }
 
 __attribute__((weak)) unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout) {
@@ -172,7 +185,7 @@ __attribute__((weak)) void loopSim(void)
   }
 
   if (sim_loops > 0) {
-    debugf("%d", sim_loop);
+    debugf("%lu", sim_loop);
   }
 
   sim_loop++;

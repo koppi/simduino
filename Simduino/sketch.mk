@@ -14,6 +14,12 @@ LIBS      += $(shell pkg-config --libs   SDL_gfx)
 CXXFLAGS  += -DHAVE_SDL_GFX
 endif
 
+ifeq ($(shell pkg-config --exists SDL_image && echo "1" || echo "0"), 1)
+CXXFLAGS  += $(shell pkg-config --cflags SDL_image)
+LIBS      += $(shell pkg-config --libs   SDL_image)
+CXXFLAGS  += -DHAVE_SDL_IMAGE
+endif
+
 ifeq ($(shell pkg-config --exists SDL_ttf && echo "1" || echo "0"), 1)
 CXXFLAGS  += $(shell pkg-config --cflags SDL_ttf)
 LIBS      += $(shell pkg-config --libs   SDL_ttf)
