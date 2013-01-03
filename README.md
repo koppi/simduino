@@ -6,8 +6,21 @@ Features
 
 * Test out a sketch without the hardware, or prior to purchasing hardware.
 * Simulated Hardware:
- * Light bulb (POV-Ray rendered icon)
- * 16x2 LCD HD44780 controller
+ * a Light bulb.
+ * a 16x2 LCD HD44780 controller.
+ 
+Included Libraries:
+
+* Ultrasonic Sensors
+ * [NewPing](http://code.google.com/p/arduino-new-ping)
+ * [Dallas Temperature Control](http://www.milesburton.com/?title=Dallas_Temperature_Control_Library)
+
+* LCD
+ * [LiquidCrystal v2](https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home)
+ 
+* Motion control
+ * [Adafruit Motor Shield](https://github.com/adafruit/Adafruit-Motor-Shield-library)
+ * [AccelStepper](http://www.open.com.au/mikem/arduino/AccelStepper)
 
 Supported Arduinos
 
