@@ -1,10 +1,13 @@
 # Simduino - run an Arduino sketch from the command-line
 
-![simduino.gif](https://github.com/koppi/simduino/wiki/simduino.gif)
+![HelloWorld.gif](https://github.com/koppi/simduino/wiki/HelloWorld.gif)
 
 Features
 
 * Test out a sketch without the hardware, or prior to purchasing hardware.
+* Simulated Hardware:
+ * Light bulb (POV-Ray rendered icon)
+ * 16x2 LCD HD44780 controller
 
 Supported Arduinos
 
@@ -22,8 +25,8 @@ Build Simduino the test sketches:
 
 ```bash
 $ cd simduino
-$ make
- Building Tutorial/00-BareMinimum
+$ make all
+ Building Tutorial/02-Blink
   cc main.cpp
   cc AFMotor.cpp
   cc AccelStepper.cpp
@@ -39,12 +42,14 @@ $ make
   ld libSimduino.a
  Built libSimduino.a
   ld 00-BareMinimum.exe
- Building Tutorial/01-Blink
+ Building Tutorial/02-Blink
   cc main.cpp
   cc sim.cpp
   ld 01-Blink.exe
 [...]
 ```
+
+![02-Blink.gif](https://github.com/koppi/simduino/wiki/02-Blink.gif)
 
 Run a test sketch from the command-line:
 
