@@ -113,6 +113,9 @@ LiquidCrystal::LiquidCrystal(uint8_t rs, uint8_t enable,
    setBacklightPin ( backlightPin, pol );
 }
 
+LiquidCrystal::~LiquidCrystal() {
+}
+
 // PUBLIC METHODS
 // ---------------------------------------------------------------------------
 

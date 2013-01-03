@@ -18,10 +18,10 @@
 #include <sim_sdl.hpp>
 #include <timer.h>
 
-#define PIX_SIZE 256
+#define PIX_SIZE 128
 
 #ifdef HAVE_SDL_IMAGE
-SDL_Surface * sdl_bulb_on, * sdl_bulb_off;
+SDL_Surface * sdl_led_on, * sdl_led_off;
 #endif
 
 void sdl_draw(SDL_Surface * sf, uint8_t port, uint8_t pin, uint8_t value)
@@ -54,9 +54,9 @@ void sdl_draw(SDL_Surface * sf, uint8_t port, uint8_t pin, uint8_t value)
   rect.h = sf->h;
 
   if (value == 0) {
-	SDL_BlitSurface(sdl_bulb_off, NULL, sf, &rect);
+	SDL_BlitSurface(sdl_led_off, NULL, sf, &rect);
   } else {
-	SDL_BlitSurface(sdl_bulb_on,  NULL, sf, &rect);
+	SDL_BlitSurface(sdl_led_on,  NULL, sf, &rect);
   }
 
 #endif
@@ -65,6 +65,8 @@ void sdl_draw(SDL_Surface * sf, uint8_t port, uint8_t pin, uint8_t value)
 }
 
 int sdl_mouse_x, sdl_mouse_y;
+
+uint8_t pin;
 
 #endif
 
@@ -129,8 +131,8 @@ int setupSim(int argc, char** argv)
   sdl_screen = sdl_init(basename(argv[0]), PIX_SIZE, PIX_SIZE, PIX_SIZE);
 
 #ifdef HAVE_SDL_IMAGE
-  sdl_bulb_on  = sdl_img_load("bulb-on.png");
-  sdl_bulb_off = sdl_img_load("bulb-off.png");
+  sdl_led_on = sdl_img_load("red-led-on.png");
+  sdl_led_off = sdl_img_load("red-led-off.png");
 #endif
 
   if (start_timer(100, &loopSim)) {
@@ -162,6 +164,17 @@ void digitalWrite(uint8_t p, uint8_t v)
   }
 }
 
+int digitalRead(uint8_t p)
+{
+  debugf("%d", p);
+
+  if (p == 2) {
+	return pin;
+  } else {
+	return LOW;
+  }
+}
+
 #ifdef HAVE_SDL
 
 unsigned long _loop = 0;
@@ -186,21 +199,26 @@ void loopSim()
 	  }
 	} else if (evt.type == SDL_QUIT) {
 	  sdl_quit = 1;
+	} else if(evt.type == SDL_MOUSEBUTTONDOWN){
+	  if (evt.button.button == SDL_BUTTON_LEFT){
+		if (pin == HIGH) {
+		  pin = LOW;
+		} else {
+		  pin = HIGH;
+		}
+	  }
 	}
   }
   
-  if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1))
-	printf("Mouse Button 1 (left) is pressed.\n");
-
-  if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(3))
-	printf("Mouse Button 3 (right) is pressed.\n");
+  if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)) {
+  }
 
   if (sdl_quit == 1 || (sim_loops > 0 && _loop >= sim_loops)) {
     shutdownSim(0);
   }
   
   if (sim_loops > 0) {
-    // debugf("%lu", _loop);
+    debugf("%lu", _loop);
   }
 
   _loop++;

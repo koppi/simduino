@@ -32,6 +32,10 @@
 #include <inttypes.h>
 #include <unistd.h>
 
+#ifdef SIM
+#include <algorithm>
+#endif
+
 #ifdef __cplusplus
 extern "C"{
 #endif
@@ -130,20 +134,28 @@ extern "C"{
 #define DEFAULT 1
 #define EXTERNAL 0
   
-  // undefine stdlib's abs if encountered
+// undefine stdlib's abs if encountered
+
+#ifdef SIM
+using namespace std;
+#else
+
 #ifdef abs
 #undef abs
 #endif
-  
+
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
 #define abs(x) ((x)>0?(x):-(x))
-#define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 #define round(x)     ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 #define radians(deg) ((deg)*DEG_TO_RAD)
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
+
+#endif
   
+#define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+
 #define interrupts() debug("sei()")
 #define noInterrupts() debug("cli()")
   

@@ -17,6 +17,34 @@ ifndef BUILD_VERBOSE
   BUILD_VERBOSE = 0
 endif
 
+# Extra libraries -------------------------------------------------------------
+
+ifeq ($(shell pkg-config --exists sdl && echo "1" || echo "0"), 1)
+CXXFLAGS  += $(shell pkg-config --cflags sdl)
+LIBS      += $(shell pkg-config --libs   sdl)
+CXXFLAGS  += -DHAVE_SDL
+endif
+
+ifeq ($(shell pkg-config --exists SDL_gfx && echo "1" || echo "0"), 1)
+CXXFLAGS  += $(shell pkg-config --cflags SDL_gfx)
+LIBS      += $(shell pkg-config --libs   SDL_gfx)
+CXXFLAGS  += -DHAVE_SDL_GFX
+endif
+
+ifeq ($(shell pkg-config --exists SDL_image && echo "1" || echo "0"), 1)
+CXXFLAGS  += $(shell pkg-config --cflags SDL_image)
+LIBS      += $(shell pkg-config --libs   SDL_image)
+CXXFLAGS  += -DHAVE_SDL_IMAGE
+endif
+
+ifeq ($(shell pkg-config --exists SDL_ttf && echo "1" || echo "0"), 1)
+CXXFLAGS  += $(shell pkg-config --cflags SDL_ttf)
+LIBS      += $(shell pkg-config --libs   SDL_ttf)
+CXXFLAGS  += -DHAVE_SDL_TTF
+endif
+
+# -----------------------------------------------------------------------------
+
 # That's our default target when none is given on the command line
 PHONY := _all
 _all:

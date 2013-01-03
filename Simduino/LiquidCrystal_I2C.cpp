@@ -89,9 +89,46 @@
 #define D6 2
 #define D7 3
 
+LiquidCrystal_I2C::LiquidCrystal_I2C()
+{
+  config(EN, RW, RS, D4, D5, D6, D7);
+}
 
-// CONSTRUCTORS
-// ---------------------------------------------------------------------------
+
+LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t backlighPin, t_backlighPol pol = POSITIVE)
+{
+  config(EN, RW, RS, D4, D5, D6, D7);
+  setBacklightPin(backlighPin, pol);
+}
+
+LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t En, uint8_t Rw, uint8_t Rs)
+{
+  config(En, Rw, Rs, D4, D5, D6, D7);
+}
+
+LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t En, uint8_t Rw, uint8_t Rs, uint8_t backlighPin, t_backlighPol pol = POSITIVE)
+{
+  config(En, Rw, Rs, D4, D5, D6, D7);
+  setBacklightPin(backlighPin, pol);
+}
+
+LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t En, uint8_t Rw,
+                                     uint8_t Rs, uint8_t d4, uint8_t d5,
+                                     uint8_t d6, uint8_t d7 )
+{
+  config(En, Rw, Rs, d4, d5, d6, d7);
+}
+
+LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t En, uint8_t Rw,
+                                     uint8_t Rs, uint8_t d4, uint8_t d5,
+                                     uint8_t d6, uint8_t d7, uint8_t backlighPin, 
+                                     t_backlighPol pol = POSITIVE )
+{
+  config(En, Rw, Rs, d4, d5, d6, d7);
+  setBacklightPin(backlighPin, pol);
+}
+
+// CONSTRUCTORS with HW connectors
 LiquidCrystal_I2C::LiquidCrystal_I2C( int fd, uint8_t lcd_Addr )
 {
   config(fd, lcd_Addr, EN, RW, RS, D4, D5, D6, D7);
@@ -116,7 +153,7 @@ LiquidCrystal_I2C::LiquidCrystal_I2C( int fd, uint8_t lcd_Addr, uint8_t En, uint
 									  t_backlighPol pol = POSITIVE)
 {
   config(fd, lcd_Addr, En, Rw, Rs, D4, D5, D6, D7);
-   setBacklightPin(backlighPin, pol);
+  setBacklightPin(backlighPin, pol);
 }
 
 LiquidCrystal_I2C::LiquidCrystal_I2C(int fd, uint8_t lcd_Addr, uint8_t En, uint8_t Rw,
@@ -132,7 +169,7 @@ LiquidCrystal_I2C::LiquidCrystal_I2C(int fd, uint8_t lcd_Addr, uint8_t En, uint8
                                      t_backlighPol pol = POSITIVE )
 {
   config(fd, lcd_Addr, En, Rw, Rs, d4, d5, d6, d7);
-   setBacklightPin(backlighPin, pol);
+  setBacklightPin(backlighPin, pol);
 }
 
 // PUBLIC METHODS
@@ -180,7 +217,10 @@ void LiquidCrystal_I2C::setBacklight( uint8_t value )
       {
          _backlightStsMask = _backlightPinMask & LCD_NOBACKLIGHT;
       }
-      _i2cio->write( _backlightStsMask );
+
+	  if (_i2cio) {
+		_i2cio->write( _backlightStsMask );
+	  }
    }
 }
 
@@ -194,27 +234,39 @@ int LiquidCrystal_I2C::init()
 {
    int status = 0;
    
-   // initialize the backpack IO expander
-   // and display functions.
-   // ------------------------------------------------------------------------
-   if ( _i2cio->begin ( _Addr ) == 1 )
-   {
-	  _i2cio->portMode ( OUTPUT );  // Set the entire IO extender to OUTPUT
-      _displayfunction = LCD_4BITMODE | LCD_2LINE | LCD_5x8DOTS;
-      status = 1;
-      _i2cio->write(0);  // Set the entire port to LOW
+   _displayfunction = LCD_4BITMODE | LCD_2LINE | LCD_5x8DOTS;
+
+   if (_i2cio) {
+	 // initialize the backpack IO expander
+	 // and display functions.
+	 // ------------------------------------------------------------------------
+	 if ( _i2cio->begin ( _Addr ) == 1 )
+	   {
+		 _i2cio->portMode ( OUTPUT );  // Set the entire IO extender to OUTPUT
+		 status = 1;
+		 _i2cio->write(0);  // Set the entire port to LOW
+	   }
    }
+   
    return ( status );
 }
 
-//
-// config
+void LiquidCrystal_I2C::config (uint8_t En, uint8_t Rw, uint8_t Rs,
+                                uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7 )
+{
+  config(0, 0, En, Rw, Rs, d4, d5, d6, d7);
+}
+
 void LiquidCrystal_I2C::config (int fd, uint8_t lcd_Addr, uint8_t En, uint8_t Rw, uint8_t Rs, 
                                 uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7 )
 {
-  _i2cio = new I2CIO(fd);
+  if (fd != 0) {
+	_i2cio = new I2CIO(fd);
+  }
 
-   _Addr = lcd_Addr;
+  if (lcd_Addr != 0) {
+	_Addr = lcd_Addr;
+  }
    
    _backlightPinMask = 0;
    _backlightStsMask = LCD_NOBACKLIGHT;
@@ -287,6 +339,8 @@ void LiquidCrystal_I2C::write4bits ( uint8_t value, uint8_t mode )
 // pulseEnable
 void LiquidCrystal_I2C::pulseEnable (uint8_t data)
 {
-   _i2cio->write (data | _En);   // En HIGH
-   _i2cio->write (data & ~_En);  // En LOW
+  if (_i2cio) {
+	_i2cio->write (data | _En);   // En HIGH
+	_i2cio->write (data & ~_En);  // En LOW
+  }
 }

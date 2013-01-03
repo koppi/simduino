@@ -116,12 +116,12 @@ int msleep(unsigned long msec)
 }
 
 __attribute__((weak)) void delay(unsigned long t) {
-  debugf("%lu", t);
+  // debugf("%lu", t);
   msleep(t);
 }
 
 __attribute__((weak)) void delayMicroseconds(unsigned int us) {
-  debugf("%d", us);
+  // debugf("%d", us);
   msleep(us / 1000);
 }
 

@@ -519,12 +519,8 @@ private:
     @result     mode LOW - write to the LCD CGRAM, HIGH - write a command to
     the LCD.
     */
-#if (ARDUINO <  100)
-   virtual void send(uint8_t value, uint8_t mode) { };
-#else
    virtual void send(uint8_t value, uint8_t mode) = 0;
-#endif
-   
+ 
 };
 
 #endif
