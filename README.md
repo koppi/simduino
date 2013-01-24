@@ -37,7 +37,7 @@ $ git clone git://github.com/koppi/simduino.git
 Install the SDL library and gcc (tested with Ubuntu 12.10):
 
 ```bash
-$ sudo apt-get -y install g++ gcc libsdl1.2-dev libsdl-ttf2.0-dev libsdl-image1.2-dev libsdl-gfx1.2-dev
+$ sudo apt-get -y install g++-4.7 gcc-4.7 libsdl1.2-dev libsdl-ttf2.0-dev libsdl-image1.2-dev libsdl-gfx1.2-dev
 ```
 
 Build the Simduino test sketches:
