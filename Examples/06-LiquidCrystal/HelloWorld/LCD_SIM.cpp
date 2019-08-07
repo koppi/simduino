@@ -1,5 +1,6 @@
 #include "LCD_SIM.h"
 
+#include <vector>
 #include <string>
 
 LCD_SIM::LCD_SIM() {
