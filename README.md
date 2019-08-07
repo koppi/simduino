@@ -68,7 +68,9 @@ $ make all
 
 Run a test sketch from the command-line:
 
-![02-Blink.gif](https://github.com/koppi/simduino/wiki/02-Blink.gif)
+```bash
+./Tutorial/02-Blink/01-Blink.exe
+```
 
 Press CTRL+C to terminate the program. Have fun!
 
