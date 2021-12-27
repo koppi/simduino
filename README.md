@@ -1,4 +1,6 @@
-# Simduino - run an Arduino sketch from the command-line
+# Simduino
+
+Run an Arduino sketch from the Linux command-line.
 
 Features:
 
