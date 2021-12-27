@@ -71,11 +71,12 @@ $ make all
 Run a test sketch from the command-line:
 
 ```bash
-./Tutorial/02-Blink/01-Blink.exe
+cd Tutorial/01-Basics/02-Blink
+./02-Blink.exe
 ```
 
-Press CTRL+C to terminate the program. Have fun!
+Press ```CTRL+C``` to terminate the program. Have fun!
 
 # Authors
 
-* © 2012-2013 [Jakob Flierl](https://github.com/koppi)
+* © 2012-2021 **Jakob Flierl** - [koppi](https://github.com/koppi)
