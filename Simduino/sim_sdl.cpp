@@ -38,7 +38,7 @@ SDL_Surface *sdl_init(const char *title, int width, int height, int sdl_font_siz
 
   sdl_font =
     TTF_OpenFont
-    ("/usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono.ttf", sdl_font_size);
+    ("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", sdl_font_size);
 
   assert(sdl_font);
 
