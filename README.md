@@ -79,4 +79,4 @@ Press ```CTRL+C``` to terminate the program. Have fun!
 
 # Authors
 
-* © 2012-2021 **Jakob Flierl** - [koppi](https://github.com/koppi)
+* © 2012-2022 **Jakob Flierl** - [koppi](https://github.com/koppi)
