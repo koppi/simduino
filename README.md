@@ -15,7 +15,7 @@ Included Libraries:
   * [NewPing](http://code.google.com/p/arduino-new-ping)
   * [Dallas Temperature Control](http://www.milesburton.com/?title=Dallas_Temperature_Control_Library)
   * LCD
-  * [LiquidCrystal v2](https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home)
+  * [New-LiquidCrystal](https://github.com/fmalpartida/New-LiquidCrystal/wiki)
 * Motion control
   * [Adafruit Motor Shield](https://github.com/adafruit/Adafruit-Motor-Shield-library)
   * [AccelStepper](http://www.open.com.au/mikem/arduino/AccelStepper)
