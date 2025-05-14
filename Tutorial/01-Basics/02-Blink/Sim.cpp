@@ -21,6 +21,12 @@
 #define PIX_SIZE 256
 
 #ifdef HAVE_SDL_IMAGE
+
+#include <SDL/SDL_image.h>
+
+#include "bulb-on.xpm"
+#include "bulb-off.xpm"
+
 SDL_Surface * sdl_bulb_on, * sdl_bulb_off;
 #endif
 
@@ -129,8 +135,11 @@ int setupSim(int argc, char** argv)
   sdl_screen = sdl_init(basename(argv[0]), PIX_SIZE, PIX_SIZE, PIX_SIZE);
 
 #ifdef HAVE_SDL_IMAGE
-  sdl_bulb_on  = sdl_img_load("bulb-on.png");
-  sdl_bulb_off = sdl_img_load("bulb-off.png");
+  // sdl_bulb_on  = sdl_img_load("bulb-on.png");
+  // sdl_bulb_off = sdl_img_load("bulb-off.png");
+  
+  sdl_bulb_on  = IMG_ReadXPMFromArray(bulb_on_xpm);
+  sdl_bulb_off = IMG_ReadXPMFromArray(bulb_off_xpm);
 #endif
 
   if (start_timer(100, &loopSim)) {

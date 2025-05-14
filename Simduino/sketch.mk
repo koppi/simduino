@@ -5,11 +5,11 @@ LIBS      += $(LIBS_SIM) -Wl,-Bdynamic -lm -Wl,--as-needed
 
 CXX       ?= g++
 
-CXXFLAGS  += -std=c++11 -g -pedantic -I$(SIMDUINO) -DSIM
+CXXFLAGS  += -std=c++11 -g -pedantic -Wno-write-strings -I$(SIMDUINO) -DSIM
 LDFLAGS   += -g
 
 # test timeout in seconds. 10sec default
-TIMEOUT   ?= 14
+TIMEOUT   ?= 10
 
 # the number of sim loops to run. 3 loops default
 TEST_ARGS ?= 3
