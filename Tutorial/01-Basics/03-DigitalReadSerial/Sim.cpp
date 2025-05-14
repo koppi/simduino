@@ -18,10 +18,15 @@
 #include <sim_sdl.hpp>
 #include <timer.h>
 
-#define PIX_SIZE 128
+#define PIX_SIZE 256
 
 #ifdef HAVE_SDL_IMAGE
-SDL_Surface * sdl_led_on, * sdl_led_off;
+
+#include <SDL/SDL_image.h>
+
+#include "bulb-on.xpm"
+#include "bulb-off.xpm"
+SDL_Surface * sdl_bulb_on, * sdl_bulb_off;
 #endif
 
 void sdl_draw(SDL_Surface * sf, uint8_t port, uint8_t pin, uint8_t value)
@@ -54,9 +59,9 @@ void sdl_draw(SDL_Surface * sf, uint8_t port, uint8_t pin, uint8_t value)
   rect.h = sf->h;
 
   if (value == 0) {
-	SDL_BlitSurface(sdl_led_off, NULL, sf, &rect);
+	SDL_BlitSurface(sdl_bulb_off, NULL, sf, &rect);
   } else {
-	SDL_BlitSurface(sdl_led_on,  NULL, sf, &rect);
+	SDL_BlitSurface(sdl_bulb_on,  NULL, sf, &rect);
   }
 
 #endif
@@ -131,8 +136,11 @@ int setupSim(int argc, char** argv)
   sdl_screen = sdl_init(basename(argv[0]), PIX_SIZE, PIX_SIZE, PIX_SIZE);
 
 #ifdef HAVE_SDL_IMAGE
-  sdl_led_on = sdl_img_load("red-led-on.png");
-  sdl_led_off = sdl_img_load("red-led-off.png");
+  // sdl_bulb_on  = sdl_img_load("bulb-on.png");
+  // sdl_bulb_off = sdl_img_load("bulb-off.png");
+  
+  sdl_bulb_on  = IMG_ReadXPMFromArray(bulb_on_xpm);
+  sdl_bulb_off = IMG_ReadXPMFromArray(bulb_off_xpm);
 #endif
 
   if (start_timer(100, &loopSim)) {
