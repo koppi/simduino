@@ -35,7 +35,7 @@ git clone git://github.com/koppi/simduino.git
 Install some software (tested with Ubuntu 25.04):
 
 ```bash
-sudo apt -y install g++ gcc libsdl1.2-dev libsdl-ttf2.0-dev libsdl-image1.2-dev libsdl-gfx1.2-dev
+sudo apt -y install make g++ gcc libsdl1.2-dev libsdl-ttf2.0-dev libsdl-image1.2-dev libsdl-gfx1.2-dev
 ```
 
 Build the Simduino test sketches:
@@ -76,4 +76,4 @@ Press ```CTRL+C``` to terminate the program. Have fun!
 
 # Authors
 
-* © 2012-2025 **Jakob Flierl** - [koppi](https://github.com/koppi)
+* © 2012 - 2025 **Jakob Flierl** - [koppi](https://github.com/koppi)
