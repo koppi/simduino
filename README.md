@@ -1,17 +1,17 @@
 # Simduino
 
-Run an Arduino sketch from the Linux command-line.
+Run an unmodified [Arduino sketch](https://docs.arduino.cc/learn/programming/sketches) from the Linux™ command-line.
 
 Features:
 
 * Test out a sketch without the hardware, or prior to purchasing hardware.
 * Simulated Hardware:
- * a Light bulb.
- * a 16x2 LCD HD44780 controller.
+ * Blink virtual LED on pin 13.
+ * Display text on a virtual display using the [16x2 LCD HD44780 controller](https://www.google.com/?q=16x2%20LCD%20HD44780%20controller) or via Linux™ [I2C](https://docs.arduino.cc/learn/communication/wire).
  
 Included Libraries:
 
-* Ultrasonic Sensors
+* Utrasonic Sensors
  * [NewPing](http://code.google.com/p/arduino-new-ping)
  * [Dallas Temperature Control](http://www.milesburton.com/?title=Dallas_Temperature_Control_Library)
 
@@ -24,17 +24,17 @@ Included Libraries:
 
 Supported Arduinos
 
-* Atmega8
+* Arduino UNO
 
 ## Documentation
 
 Checkout the Simduino repository:
 
 ```bash
-$ git clone git://github.com/koppi/simduino.git
+git clone git://github.com/koppi/simduino.git
 ```
 
-Install the SDL library and gcc (tested with Ubuntu 12.10):
+Install the SDL library and gcc (tested with Ubuntu 25.04):
 
 ```bash
 sudo apt -y install g++ gcc libsdl1.2-dev libsdl-ttf2.0-dev libsdl-image1.2-dev libsdl-gfx1.2-dev
@@ -68,15 +68,14 @@ $ make all
 [...]
 ```
 
-Run a test sketch from the command-line:
+Run the blink sketch from the command-line:
 
 ```bash
-cd Tutorial/01-Basics/02-Blink
-./02-Blink.exe
+Tutorial/01-Basics/02-Blink/02-Blink.exe 100
 ```
 
 Press ```CTRL+C``` to terminate the program. Have fun!
 
 # Authors
 
-* © 2012-2022 **Jakob Flierl** - [koppi](https://github.com/koppi)
+* © 2012-2025 **Jakob Flierl** - [koppi](https://github.com/koppi)

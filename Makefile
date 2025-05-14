@@ -13,19 +13,19 @@ DIRS_CLEAN = $(DIRS:%=clean-%)
 all: $(DIRS_BUILD)
 
 $(DIRS_BUILD):
-	@echo " Building $(@:build-%=%)"
+	@echo " $(@:build-%=%)"
 	$(Q)$(MAKE) -C $(@:build-%=%) all
 
 test: $(DIRS_TESTS)
 
 $(DIRS_TESTS):
-	@echo " Testing $(@:tests-%=%)"
+	@echo " $(@:tests-%=%)"
 	$(Q)$(MAKE) -C $(@:tests-%=%) test
 
 clean: $(DIRS_CLEAN)
 
 $(DIRS_CLEAN):
-	@echo " Cleaning $(@:clean-%=%)"
+	@echo " $(@:clean-%=%)"
 	$(Q)$(MAKE) -C $(@:clean-%=%) clean
 
 .PHONY: all $(DIRS_BUILD) test $(DIRS_TESTS) clean $(DIRS_CLEAN)

@@ -5,7 +5,8 @@ LIBS      += $(LIBS_SIM) -Wl,-Bdynamic -lm -Wl,--as-needed
 
 CXX       ?= g++
 
-CXXFLAGS  += -std=c++11 -g -pedantic -Wno-write-strings -I$(SIMDUINO) -DSIM
+CXXFLAGS  += -std=c++11 -g -pedantic -I$(SIMDUINO) -DSIM
+CXXFLAGS  += -Wno-deprecated-declarations -Wno-write-strings
 LDFLAGS   += -g
 
 # test timeout in seconds. 10sec default
